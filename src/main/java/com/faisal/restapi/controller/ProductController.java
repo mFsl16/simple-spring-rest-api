@@ -1,9 +1,17 @@
 package com.faisal.restapi.controller;
 
+import javax.validation.Valid;
+
+import com.faisal.restapi.dto.ResponseDto;
 import com.faisal.restapi.model.entities.Product;
 import com.faisal.restapi.services.ProductServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +27,22 @@ public class ProductController {
     
     @Autowired ProductServices productServices;
     @PostMapping
-    public Product save(@RequestBody Product product) {
-        return productServices.addNewProduct(product);
+    public ResponseEntity<ResponseDto<Product>> save(@Valid @RequestBody Product product, Errors errors) {
+        
+        ResponseDto<Product> responseDto = new ResponseDto<>();
+
+        if(errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseDto.getMessage().add(error.getDefaultMessage());
+            }
+            responseDto.setStatus(false);
+            responseDto.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+
+        responseDto.setStatus(true);
+        responseDto.setPayload(productServices.addNewProduct(product));
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping()
@@ -34,8 +56,22 @@ public class ProductController {
     }
 
     @PutMapping()
-    public Product update(@RequestBody Product product) {
-        return productServices.addNewProduct(product);
+    public ResponseEntity<ResponseDto<Product>> update(@Valid @RequestBody Product product, Errors errors) {
+        
+        ResponseDto<Product> responseDto = new ResponseDto<>();
+
+        if(errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseDto.getMessage().add(error.getDefaultMessage());
+            }
+            responseDto.setStatus(false);
+            responseDto.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+
+        responseDto.setStatus(true);
+        responseDto.setPayload(productServices.addNewProduct(product));
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{id}")

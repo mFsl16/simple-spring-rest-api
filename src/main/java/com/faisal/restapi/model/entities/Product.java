@@ -2,11 +2,16 @@ package com.faisal.restapi.model.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_product")
@@ -18,10 +23,15 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100, nullable = false)
+    @NotEmpty(message = "Name cant be empty")
     private String name;
 
     private String description;
 
+    @Column(nullable = false)
+    @NotNull(message = "Price is required")
+    @DecimalMin("0.0")
     private Double price;
 
     public Product() {
