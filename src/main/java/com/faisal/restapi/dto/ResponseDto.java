@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
 public class ResponseDto<T> {
     
     private boolean status;
@@ -17,32 +24,4 @@ public class ResponseDto<T> {
         this.message = message;
         this.payload = payload;
     }
-
-    public ResponseDto() {
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public List<String> getMessage() {
-        return message;
-    }
-
-    public void setMessage(List<String> message) {
-        this.message = message;
-    }
-
-    public T getPayload() {
-        return payload;
-    }
-
-    public void setPayload(T payload) {
-        this.payload = payload;
-    }
-
 }
